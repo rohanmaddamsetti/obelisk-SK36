@@ -4,7 +4,7 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ b47161ea-b5f7-45b8-8daa-eef7edd35376
+# ╔═╡ 498a2906-9a95-47ef-b3e3-a5ef24ee0a77
 begin
 	using Plots
 	using DifferentialEquations
@@ -12,13 +12,13 @@ begin
 	using CSV
 end
 
-# ╔═╡ 230952b6-1e06-11f0-0556-a3f281181857
+# ╔═╡ 60f6f4ca-a684-11ee-26bd-6b50dd5567a6
 md"""
 # obelisk-abundance-model.jl 
 
 by Rohan Maddamsetti  
 
-Julia version 1.11.  
+Julia version 1.10.  
 
 
 ##### Hypothesis to examine in this notebook:
@@ -27,7 +27,7 @@ Does increasing Obelisk copy number increase Obelisk stability, at least transie
 ##### Yes. The following simple model illustrates this point.
 """
 
-# ╔═╡ 7fad1c2d-9657-4d99-8563-53ae0dba434e
+# ╔═╡ 772351cf-cddd-45d8-9f34-f3ef6ccb2a66
 md"""
 ## **Model description**
 
@@ -43,7 +43,10 @@ The total population size $X(t) = x_1(t) + x_2(t)$.
 
 """
 
-# ╔═╡ 3f526493-539c-431d-9d25-be26fd1e2724
+# ╔═╡ aa06a9f8-aa26-44ea-bebc-2e055b4f0ffa
+
+
+# ╔═╡ d3b956b4-885a-447c-bd00-de5fa18fdcad
 md"""
 *Selection dynamics*  
 
@@ -65,7 +68,7 @@ In our model, Obelisk copy number $N$ and Obelisk capacity $N^*$ are free parame
 
 """
 
-# ╔═╡ cae836c4-1c71-4817-8ddc-f7cf4ad24a48
+# ╔═╡ c270d434-d426-47f7-aec2-1423f3354fa6
 md"""
 
 *Mutation dynamics*
@@ -94,7 +97,7 @@ $\frac{d\mathbf{x}}{dt} = \mathbf{A}\mathbf{x}(t)$.
 
 """
 
-# ╔═╡ 33ecfefd-249e-4cab-9c97-a45862555b9a
+# ╔═╡ 3c40806b-a6ac-4ec0-8bc2-0e84a0ced38c
 md"""
  **Analytical solution for response time**
 
@@ -128,7 +131,7 @@ $\mathbf{x}(t) = \begin{bmatrix} 1 \\ \frac{-r_1\mu}{r_2 - r_1(1-\mu)} \end{bmat
 
 """
 
-# ╔═╡ 39c850b2-22de-4177-8596-5340055c5fda
+# ╔═╡ 6e3b4c9f-52cd-4368-9a64-acc09515256f
 md"""
 Now, we can solve for the time $t^*$ where $x_1(t^*) = x_2(t^*)$. This is our desired response time.
 
@@ -144,14 +147,14 @@ and examine how $t^*$ changes as we change Obelisk copy number $N$ and Obelisk c
 
 """
 
-# ╔═╡ 7e2828b4-1850-4855-9cb7-3d9f1d2f31ae
+# ╔═╡ fd975d35-dae6-45d3-8c59-fd211a7b3334
 begin
 	## Define the time span for solving the ODEs
 	TIMESPAN = 1000.0
 	tspan = (0.0, TIMESPAN)
 end
 
-# ╔═╡ a3631750-3852-4034-94c6-712e90183704
+# ╔═╡ 6d43ce5f-5e34-4d4e-bcd1-b876c5744be8
 begin
 
 	OBELISK_CAPACITY = 1000
@@ -171,7 +174,7 @@ begin
 	
 end
 
-# ╔═╡ 0943e4c5-577a-40fa-b61e-4935c4f1d4c5
+# ╔═╡ f64849fa-12f0-45cc-8f71-85465b911f6b
 function calc_tstar(N=OBELISK_COPY_NUM,Nmax=MAX_OBELISK_COPY_NUM)
 	## We define the response time for the x2 subpopulation (those without obelisks) to equal the size of the x1 subpopulation (those with obelisks), starting from the initial condition x1(0) = 1, x2(0) = 0.
 	
@@ -188,10 +191,10 @@ function calc_tstar(N=OBELISK_COPY_NUM,Nmax=MAX_OBELISK_COPY_NUM)
 	return tstar
 end
 
-# ╔═╡ 72b247da-f554-4441-9ed3-c8cf661ba544
+# ╔═╡ f59c6e3e-88f8-463c-9806-2202235ccebc
 md""" ##### Figure 1H. Phase diagram showing effects of varying Obelisk Copy Number $N$ and Obelisk capacity $N^*$. """
 
-# ╔═╡ 798d0958-9ee5-42c7-8639-f64b84891d23
+# ╔═╡ 5fa73395-e2fc-4a29-9bef-3fb7f78b4657
 let
 	fig1H = plot(size=(3*72,3.5*72))
 	
@@ -252,10 +255,10 @@ let
 	
 end
 
-# ╔═╡ e53f8d90-84b9-46f2-a94d-b799147cf310
+# ╔═╡ dcf9a141-d813-476c-99cd-6251430c411f
 md""" #### Set the initial population state. """
 
-# ╔═╡ 2dfc1a4b-edec-4021-9ccf-9588ba51251a
+# ╔═╡ 8ca3e39e-778a-46fb-a7c6-5fdc8fbb86bd
 begin
 	## parameters used across time course simulations.
 	initial_pop_vec = zeros(BigFloat, 2)
@@ -264,18 +267,18 @@ begin
 	initial_pop_vec[1] = big"1.0"
 end
 
-# ╔═╡ 61b04c6f-9984-4dcb-a147-805a39dc5f4b
+# ╔═╡ 9162780a-5c20-4d89-9984-9bf2b9550203
 md""" #### Define and solve the ODEs. """
 
-# ╔═╡ 9b0ed8a2-2fe7-4aa4-bcd3-a0d0d144b8ca
+# ╔═╡ 6654f511-9709-40e8-abdd-ea44c1874fa2
 function odefunc(du, u, p, t)
 	du .= A*u
 end
 
-# ╔═╡ b42735b4-9825-4ddb-9c84-d7cb22a0a6ac
+# ╔═╡ 959627bd-489a-4e66-aac9-63de0df9fc52
 md""" ## model the population dynamics."""
 
-# ╔═╡ af52f6ad-0d86-465c-908c-a147303ca2b5
+# ╔═╡ 61d1fa00-b844-47ee-bd54-5dce24f243d0
 begin
 	## run the simulation.
 	
@@ -291,7 +294,7 @@ begin
 	
 end
 
-# ╔═╡ b113f5dd-f53f-4b07-8ac7-d7efe83e70f3
+# ╔═╡ 9b0089e8-7865-4a70-bc1d-b8731f2222a8
 begin
 	## Extract the subpopulation timecourses.
 	## Example for subpopulation 1: x1 = [u[1] for u in final_x]
@@ -306,10 +309,10 @@ begin
 	end
 end
 
-# ╔═╡ f1d66b1c-4388-45c2-847a-7995d15b582f
+# ╔═╡ a0e766fe-5929-49f6-9bce-4747f14f6208
 md""" ##### Figure 1E. Example time course."""
 
-# ╔═╡ a0ac2152-94ee-4428-8425-bf2b718ab7bd
+# ╔═╡ 3d1d138a-a5c4-4961-9550-85b00b50c31a
 let
 	## calculate the total population size over time.
 	total_popsize_over_time = subpopulation_time_courses[1] + subpopulation_time_courses[2]
@@ -327,19 +330,19 @@ let
 	timecourse_plot
 end
 
-# ╔═╡ 80c2c572-feaa-464b-8119-122b6200cba2
+# ╔═╡ 29fddaa7-77e3-4cf0-96b5-cd8274236a55
 md""" let's see out how small $\mu$ can get in Julia."""
 
-# ╔═╡ cbff586f-96d8-4417-a922-6eedff64c779
+# ╔═╡ 9c6bb6f7-58be-47b6-9c10-59bfd6aa0fab
 (1/2)^1074
 
-# ╔═╡ f321a580-f74d-47be-a61a-c5ca7851e8c8
+# ╔═╡ 1a9be291-9fc2-4e77-926e-c1abdf31c4e2
 (1/2)^1075
 
-# ╔═╡ b6404c8f-84a6-49c4-ab8d-7620984905ba
+# ╔═╡ ef51b273-1491-46c9-87f7-019d2336c9b8
 md""" ##### Figure 1F. Effects of varying Obelisk capacity $N^*$ on time course dynamics. """
 
-# ╔═╡ 5563d9e6-3256-41b2-b00d-c3d0eee883a0
+# ╔═╡ a434248a-c4a5-42d1-a9e8-25b9acf40658
 function dynamics!(du, u, p, t)	
 
 	## get the parameters.
@@ -361,20 +364,20 @@ function dynamics!(du, u, p, t)
 	
 end
 
-# ╔═╡ 37641bb9-e041-42df-9174-c8818f97ccd0
+# ╔═╡ a92deb2f-dda8-4ec9-a318-f755a6f7b828
 function LostObeliskPopFrequencyOverTime(sol)
 	## fraction of population that has lost Obelisks over time
 	lost_obelisk_index_vec = [(v[2])/sum(v) for v in sol.u]
 	return lost_obelisk_index_vec
 end
 
-# ╔═╡ 8c490563-62a5-457c-81d3-aaa7b457aa25
+# ╔═╡ e08ef49d-afa7-4d38-b123-90b540205f74
 struct LostObeliskPopFrequencyTimeSeries
     t::Vector{Float64}
     v::Vector{Float64}
 end
 
-# ╔═╡ a5ff217a-5374-4eea-b726-a36b44b03159
+# ╔═╡ 64a914d8-0475-4cc5-b27d-7267c0b35572
 function TimeSeriesLostObeliskPopFrequency(obelisk_copy_number, obelisk_capacity)
 	my_parameters = [Float64(obelisk_copy_number), Float64(obelisk_capacity)]
 	my_prob = ODEProblem(dynamics!, initial_pop_vec, tspan, my_parameters)
@@ -383,7 +386,7 @@ function TimeSeriesLostObeliskPopFrequency(obelisk_copy_number, obelisk_capacity
 	return LostObelisk_TimeSeries
 end
 
-# ╔═╡ 7c530422-07c3-45a5-849b-c4fb3580fecb
+# ╔═╡ c33f00f6-c2ee-4703-a9f0-90d88f3f4582
 let
 	fig1F = plot(size=(3.5*72,3*72))
 
@@ -427,10 +430,10 @@ let
 	fig1F
 end
 
-# ╔═╡ 48a8897d-35b9-4463-8a59-1f6d91199659
+# ╔═╡ 7bcc80e5-5cd5-46c7-b287-d00a84403c38
 md""" ##### Figure 1G. Effects of varying Obelisk Copy Number $N$ on time course dynamics."""
 
-# ╔═╡ f7eb6e9e-b6c2-4099-85f5-664786d0d401
+# ╔═╡ d4426d1f-13b0-4aec-b11c-0b971ddc3fba
 let
 	fig1G = plot(size=(3.5*72,3*72))
 
@@ -474,9 +477,6 @@ let
 	fig1G
 end
 
-# ╔═╡ bf0332d6-c406-4f07-a93a-e25f34fb068e
-
-
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -486,10 +486,10 @@ DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 
 [compat]
-CSV = "~0.10.14"
+CSV = "~0.10.12"
 DataFrames = "~1.6.1"
-DifferentialEquations = "~7.14.0"
-Plots = "~1.40.8"
+DifferentialEquations = "~7.12.0"
+Plots = "~1.39.0"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -498,7 +498,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.1"
 manifest_format = "2.0"
-project_hash = "3c9b0e7c7155cec3a863c1b7280aa2ead3efcd63"
+project_hash = "2205585f5de5d9681b092111dfdb2e07884ca89f"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "eea5d80188827b35333801ef97a40c2ed653b081"
@@ -883,11 +883,11 @@ version = "6.158.1"
     Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [[deps.DiffEqCallbacks]]
-deps = ["DataStructures", "DiffEqBase", "ForwardDiff", "Functors", "LinearAlgebra", "Markdown", "NonlinearSolve", "Parameters", "RecipesBase", "RecursiveArrayTools", "SciMLBase", "StaticArraysCore"]
-git-tree-sha1 = "19dbd44d18bbfdfcf5e56c99cea9b0ed23df350a"
+deps = ["DataStructures", "DiffEqBase", "ForwardDiff", "Functors", "LinearAlgebra", "Markdown", "NLsolve", "Parameters", "RecipesBase", "RecursiveArrayTools", "SciMLBase", "StaticArraysCore"]
+git-tree-sha1 = "ee954c8b9d348b7a8a6aec5f28288bf5adecd4ee"
 uuid = "459566f4-90b8-5000-8ac3-15dfb0a30def"
-version = "3.9.1"
-weakdeps = ["OrdinaryDiffEq", "OrdinaryDiffEqCore", "Sundials"]
+version = "2.37.0"
+weakdeps = ["OrdinaryDiffEq", "Sundials"]
 
 [[deps.DiffEqNoiseProcess]]
 deps = ["DiffEqBase", "Distributions", "GPUArraysCore", "LinearAlgebra", "Markdown", "Optim", "PoissonRandom", "QuadGK", "Random", "Random123", "RandomNumbers", "RecipesBase", "RecursiveArrayTools", "ResettableStacks", "SciMLBase", "StaticArraysCore", "Statistics"]
@@ -915,9 +915,9 @@ version = "1.15.1"
 
 [[deps.DifferentialEquations]]
 deps = ["BoundaryValueDiffEq", "DelayDiffEq", "DiffEqBase", "DiffEqCallbacks", "DiffEqNoiseProcess", "JumpProcesses", "LinearAlgebra", "LinearSolve", "NonlinearSolve", "OrdinaryDiffEq", "Random", "RecursiveArrayTools", "Reexport", "SciMLBase", "SteadyStateDiffEq", "StochasticDiffEq", "Sundials"]
-git-tree-sha1 = "d851f2ca05f3cec9988f081b047a778a58b48aaf"
+git-tree-sha1 = "8864b6a953eeba7890d23258aca468d90ca73fd6"
 uuid = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
-version = "7.14.0"
+version = "7.12.0"
 
 [[deps.DifferentiationInterface]]
 deps = ["ADTypes", "LinearAlgebra"]
@@ -1207,16 +1207,16 @@ uuid = "46192b85-c4d5-4398-a991-12ede77f4527"
 version = "0.1.6"
 
 [[deps.GR]]
-deps = ["Artifacts", "Base64", "DelimitedFiles", "Downloads", "GR_jll", "HTTP", "JSON", "Libdl", "LinearAlgebra", "Preferences", "Printf", "Qt6Wayland_jll", "Random", "Serialization", "Sockets", "TOML", "Tar", "Test", "p7zip_jll"]
-git-tree-sha1 = "ee28ddcd5517d54e417182fec3886e7412d3926f"
+deps = ["Artifacts", "Base64", "DelimitedFiles", "Downloads", "GR_jll", "HTTP", "JSON", "Libdl", "LinearAlgebra", "Pkg", "Preferences", "Printf", "Random", "Serialization", "Sockets", "TOML", "Tar", "Test", "UUIDs", "p7zip_jll"]
+git-tree-sha1 = "27442171f28c952804dede8ff72828a96f2bfc1f"
 uuid = "28b8d3ca-fb5f-59d9-8090-bfdbd6d07a71"
-version = "0.73.8"
+version = "0.72.10"
 
 [[deps.GR_jll]]
 deps = ["Artifacts", "Bzip2_jll", "Cairo_jll", "FFMPEG_jll", "Fontconfig_jll", "FreeType2_jll", "GLFW_jll", "JLLWrappers", "JpegTurbo_jll", "Libdl", "Libtiff_jll", "Pixman_jll", "Qt6Base_jll", "Zlib_jll", "libpng_jll"]
-git-tree-sha1 = "f31929b9e67066bee48eec8b03c0df47d31a74b3"
+git-tree-sha1 = "025d171a2847f616becc0f84c8dc62fe18f0f6dd"
 uuid = "d2c73de3-f751-5644-a686-071e5b155ba9"
-version = "0.73.8+0"
+version = "0.72.10+0"
 
 [[deps.GenericSchur]]
 deps = ["LinearAlgebra", "Printf"]
@@ -1386,10 +1386,10 @@ uuid = "c1c5ebd0-6772-5130-a774-d5fcae4a789d"
 version = "3.100.2+0"
 
 [[deps.LERC_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "36bdbc52f13a7d1dcb0f3cd694e01677a515655b"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "bf36f528eec6634efc60d7ec062008f171071434"
 uuid = "88015f11-f218-50d7-93a8-a6af411a945d"
-version = "4.0.0+0"
+version = "3.0.0+1"
 
 [[deps.LLVMOpenMP_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1401,7 +1401,7 @@ version = "18.1.7+0"
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "854a9c268c43b77b0a27f22d7fab8d33cdb3a731"
 uuid = "dd4b983a-f0e5-5f8d-a1b7-129d4a5fb1ac"
-version = "2.10.2+3"
+version = "2.10.2+1"
 
 [[deps.LaTeXStrings]]
 git-tree-sha1 = "dda21b8cbd6a6c40d9d02a73230f9d70fed6918c"
@@ -1526,9 +1526,9 @@ version = "2.40.1+0"
 
 [[deps.Libtiff_jll]]
 deps = ["Artifacts", "JLLWrappers", "JpegTurbo_jll", "LERC_jll", "Libdl", "XZ_jll", "Zlib_jll", "Zstd_jll"]
-git-tree-sha1 = "b404131d06f7886402758c9ce2214b636eb4d54a"
+git-tree-sha1 = "2da088d113af58221c52828a80378e16be7d037a"
 uuid = "89763e89-9b03-5906-acba-b20f662cd828"
-version = "4.7.0+0"
+version = "4.5.1+1"
 
 [[deps.Libuuid_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1797,13 +1797,13 @@ version = "1.4.3"
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "7493f61f55a6cce7325f197443aa80d32554ba10"
 uuid = "458c3c95-2e84-50aa-8efc-19380b2a3a95"
-version = "3.0.15+3"
+version = "3.0.15+1"
 
 [[deps.OpenSpecFun_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "13652491f6856acfd2db29360e1bbcd4565d04f1"
 uuid = "efe28fd5-8261-553b-a9e1-b2916fc3738e"
-version = "0.5.5+2"
+version = "0.5.5+0"
 
 [[deps.Optim]]
 deps = ["Compat", "FillArrays", "ForwardDiff", "LineSearches", "LinearAlgebra", "NLSolversBase", "NaNMath", "Parameters", "PositiveFactorizations", "Printf", "SparseArrays", "StatsBase"]
@@ -2086,10 +2086,10 @@ uuid = "995b91a9-d308-5afd-9ec6-746e21dbc043"
 version = "1.4.2"
 
 [[deps.Plots]]
-deps = ["Base64", "Contour", "Dates", "Downloads", "FFMPEG", "FixedPointNumbers", "GR", "JLFzf", "JSON", "LaTeXStrings", "Latexify", "LinearAlgebra", "Measures", "NaNMath", "Pkg", "PlotThemes", "PlotUtils", "PrecompileTools", "Printf", "REPL", "Random", "RecipesBase", "RecipesPipeline", "Reexport", "RelocatableFolders", "Requires", "Scratch", "Showoff", "SparseArrays", "Statistics", "StatsBase", "TOML", "UUIDs", "UnicodeFun", "UnitfulLatexify", "Unzip"]
-git-tree-sha1 = "45470145863035bb124ca51b320ed35d071cc6c2"
+deps = ["Base64", "Contour", "Dates", "Downloads", "FFMPEG", "FixedPointNumbers", "GR", "JLFzf", "JSON", "LaTeXStrings", "Latexify", "LinearAlgebra", "Measures", "NaNMath", "Pkg", "PlotThemes", "PlotUtils", "PrecompileTools", "Preferences", "Printf", "REPL", "Random", "RecipesBase", "RecipesPipeline", "Reexport", "RelocatableFolders", "Requires", "Scratch", "Showoff", "SparseArrays", "Statistics", "StatsBase", "UUIDs", "UnicodeFun", "UnitfulLatexify", "Unzip"]
+git-tree-sha1 = "ccee59c6e48e6f2edf8a5b64dc817b6729f99eb5"
 uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-version = "1.40.8"
+version = "1.39.0"
 
     [deps.Plots.extensions]
     FileIOExt = "FileIO"
@@ -2177,27 +2177,9 @@ version = "1.2.1"
 
 [[deps.Qt6Base_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Fontconfig_jll", "Glib_jll", "JLLWrappers", "Libdl", "Libglvnd_jll", "OpenSSL_jll", "Vulkan_Loader_jll", "Xorg_libSM_jll", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Xorg_libxcb_jll", "Xorg_xcb_util_cursor_jll", "Xorg_xcb_util_image_jll", "Xorg_xcb_util_keysyms_jll", "Xorg_xcb_util_renderutil_jll", "Xorg_xcb_util_wm_jll", "Zlib_jll", "libinput_jll", "xkbcommon_jll"]
-git-tree-sha1 = "492601870742dcd38f233b23c3ec629628c1d724"
+git-tree-sha1 = "37b7bb7aabf9a085e0044307e1717436117f2b3b"
 uuid = "c0090381-4147-56d7-9ebc-da0b1113ec56"
-version = "6.7.1+1"
-
-[[deps.Qt6Declarative_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Qt6Base_jll", "Qt6ShaderTools_jll"]
-git-tree-sha1 = "e5dd466bf2569fe08c91a2cc29c1003f4797ac3b"
-uuid = "629bc702-f1f5-5709-abd5-49b8460ea067"
-version = "6.7.1+2"
-
-[[deps.Qt6ShaderTools_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Qt6Base_jll"]
-git-tree-sha1 = "1a180aeced866700d4bebc3120ea1451201f16bc"
-uuid = "ce943373-25bb-56aa-8eca-768745ed7b5a"
-version = "6.7.1+1"
-
-[[deps.Qt6Wayland_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Qt6Base_jll", "Qt6Declarative_jll"]
-git-tree-sha1 = "729927532d48cf79f49070341e1d918a65aba6b0"
-uuid = "e99dba38-086e-5de3-a5b1-6e4c66e897c3"
-version = "6.7.1+1"
+version = "6.5.3+1"
 
 [[deps.QuadGK]]
 deps = ["DataStructures", "LinearAlgebra"]
@@ -2603,9 +2585,9 @@ weakdeps = ["ChainRulesCore", "InverseFunctions"]
 
 [[deps.SteadyStateDiffEq]]
 deps = ["ConcreteStructs", "DiffEqBase", "DiffEqCallbacks", "LinearAlgebra", "Reexport", "SciMLBase"]
-git-tree-sha1 = "920acf6ae36c86f23969fea1d317e040dbfccf53"
+git-tree-sha1 = "a735fd5053724cf4de31c81b4e2cc429db844be5"
 uuid = "9672c7b4-1e72-59bd-8a11-6ac3964bc41f"
-version = "2.4.1"
+version = "2.0.1"
 
 [[deps.StochasticDiffEq]]
 deps = ["Adapt", "ArrayInterface", "DataStructures", "DiffEqBase", "DiffEqNoiseProcess", "DocStringExtensions", "FiniteDiff", "ForwardDiff", "JumpProcesses", "LevyArea", "LinearAlgebra", "Logging", "MuladdMacro", "NLsolve", "OrdinaryDiffEq", "Random", "RandomNumbers", "RecursiveArrayTools", "Reexport", "SciMLBase", "SciMLOperators", "SparseArrays", "SparseDiffTools", "StaticArrays", "UnPack"]
@@ -2977,7 +2959,7 @@ version = "1.2.13+1"
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "555d1076590a6cc2fdee2ef1469451f872d8b41b"
 uuid = "3161d3a3-bdf6-5164-811a-617609db77b4"
-version = "1.5.6+3"
+version = "1.5.6+1"
 
 [[deps.eudev_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "gperf_jll"]
@@ -3042,7 +3024,7 @@ version = "1.18.0+0"
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Zlib_jll"]
 git-tree-sha1 = "b70c870239dc3d7bc094eb2d6be9b73d27bef280"
 uuid = "b53b4c65-9356-5827-b1ea-8c7a1a84506f"
-version = "1.6.44+2"
+version = "1.6.44+0"
 
 [[deps.libvorbis_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Ogg_jll", "Pkg"]
@@ -3092,38 +3074,38 @@ version = "1.4.1+1"
 """
 
 # ╔═╡ Cell order:
-# ╠═230952b6-1e06-11f0-0556-a3f281181857
-# ╠═b47161ea-b5f7-45b8-8daa-eef7edd35376
-# ╠═7fad1c2d-9657-4d99-8563-53ae0dba434e
-# ╠═3f526493-539c-431d-9d25-be26fd1e2724
-# ╠═cae836c4-1c71-4817-8ddc-f7cf4ad24a48
-# ╠═33ecfefd-249e-4cab-9c97-a45862555b9a
-# ╠═39c850b2-22de-4177-8596-5340055c5fda
-# ╠═7e2828b4-1850-4855-9cb7-3d9f1d2f31ae
-# ╠═a3631750-3852-4034-94c6-712e90183704
-# ╠═0943e4c5-577a-40fa-b61e-4935c4f1d4c5
-# ╠═72b247da-f554-4441-9ed3-c8cf661ba544
-# ╠═798d0958-9ee5-42c7-8639-f64b84891d23
-# ╠═e53f8d90-84b9-46f2-a94d-b799147cf310
-# ╠═2dfc1a4b-edec-4021-9ccf-9588ba51251a
-# ╠═61b04c6f-9984-4dcb-a147-805a39dc5f4b
-# ╠═9b0ed8a2-2fe7-4aa4-bcd3-a0d0d144b8ca
-# ╠═b42735b4-9825-4ddb-9c84-d7cb22a0a6ac
-# ╠═af52f6ad-0d86-465c-908c-a147303ca2b5
-# ╠═b113f5dd-f53f-4b07-8ac7-d7efe83e70f3
-# ╠═f1d66b1c-4388-45c2-847a-7995d15b582f
-# ╠═a0ac2152-94ee-4428-8425-bf2b718ab7bd
-# ╠═80c2c572-feaa-464b-8119-122b6200cba2
-# ╠═cbff586f-96d8-4417-a922-6eedff64c779
-# ╠═f321a580-f74d-47be-a61a-c5ca7851e8c8
-# ╠═b6404c8f-84a6-49c4-ab8d-7620984905ba
-# ╠═5563d9e6-3256-41b2-b00d-c3d0eee883a0
-# ╠═37641bb9-e041-42df-9174-c8818f97ccd0
-# ╠═8c490563-62a5-457c-81d3-aaa7b457aa25
-# ╠═a5ff217a-5374-4eea-b726-a36b44b03159
-# ╠═7c530422-07c3-45a5-849b-c4fb3580fecb
-# ╠═48a8897d-35b9-4463-8a59-1f6d91199659
-# ╠═f7eb6e9e-b6c2-4099-85f5-664786d0d401
-# ╠═bf0332d6-c406-4f07-a93a-e25f34fb068e
+# ╠═60f6f4ca-a684-11ee-26bd-6b50dd5567a6
+# ╠═498a2906-9a95-47ef-b3e3-a5ef24ee0a77
+# ╠═772351cf-cddd-45d8-9f34-f3ef6ccb2a66
+# ╠═aa06a9f8-aa26-44ea-bebc-2e055b4f0ffa
+# ╠═d3b956b4-885a-447c-bd00-de5fa18fdcad
+# ╠═c270d434-d426-47f7-aec2-1423f3354fa6
+# ╠═3c40806b-a6ac-4ec0-8bc2-0e84a0ced38c
+# ╠═6e3b4c9f-52cd-4368-9a64-acc09515256f
+# ╠═fd975d35-dae6-45d3-8c59-fd211a7b3334
+# ╠═6d43ce5f-5e34-4d4e-bcd1-b876c5744be8
+# ╠═f64849fa-12f0-45cc-8f71-85465b911f6b
+# ╠═f59c6e3e-88f8-463c-9806-2202235ccebc
+# ╠═5fa73395-e2fc-4a29-9bef-3fb7f78b4657
+# ╠═dcf9a141-d813-476c-99cd-6251430c411f
+# ╠═8ca3e39e-778a-46fb-a7c6-5fdc8fbb86bd
+# ╠═9162780a-5c20-4d89-9984-9bf2b9550203
+# ╠═6654f511-9709-40e8-abdd-ea44c1874fa2
+# ╠═959627bd-489a-4e66-aac9-63de0df9fc52
+# ╠═61d1fa00-b844-47ee-bd54-5dce24f243d0
+# ╠═9b0089e8-7865-4a70-bc1d-b8731f2222a8
+# ╠═a0e766fe-5929-49f6-9bce-4747f14f6208
+# ╠═3d1d138a-a5c4-4961-9550-85b00b50c31a
+# ╠═29fddaa7-77e3-4cf0-96b5-cd8274236a55
+# ╠═9c6bb6f7-58be-47b6-9c10-59bfd6aa0fab
+# ╠═1a9be291-9fc2-4e77-926e-c1abdf31c4e2
+# ╠═ef51b273-1491-46c9-87f7-019d2336c9b8
+# ╠═a434248a-c4a5-42d1-a9e8-25b9acf40658
+# ╠═a92deb2f-dda8-4ec9-a318-f755a6f7b828
+# ╠═e08ef49d-afa7-4d38-b123-90b540205f74
+# ╠═64a914d8-0475-4cc5-b27d-7267c0b35572
+# ╠═c33f00f6-c2ee-4703-a9f0-90d88f3f4582
+# ╠═7bcc80e5-5cd5-46c7-b287-d00a84403c38
+# ╠═d4426d1f-13b0-4aec-b11c-0b971ddc3fba
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
