@@ -193,8 +193,8 @@ $ analyze-Obelisk-single-mutant-free-energies.R
 
 #### Mathematical model.
 
-obelisk-abundance-model.jl is a Pluto notebook written in Julia 1.10.
-This notebook can be run by installing and running Pluto.jl within Julia 1.10+ 
+obelisk-abundance-model.jl is a Pluto notebook written in Julia 1.11.
+This notebook can be run by installing and running Pluto.jl within Julia 1.11+ 
 (see instructions at: https://plutojl.org/) and then opening the notebook using the
 Pluto web browser interface. 
 
