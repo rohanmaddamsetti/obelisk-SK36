@@ -7,8 +7,8 @@ group_by(RunID) %>%
     mutate(Rank = rank(desc(tpm))) %>%
     ungroup() %>%
     arrange(Rank)
-write.csv(ranked.kallisto.results, "../results/SupplementaryDataFile_ranked_SK36_combined_kallisto_abundance.csv")
+write.csv(ranked.kallisto.results, "../results/SupplementaryDataFile_ranked_SK36_combined_kallisto_abundance.csv", row.names=FALSE, quote=FALSE)
 
 obelisk.rank.results <- ranked.kallisto.results %>%
     filter(SeqType == "Obelisk")
-write.csv(obelisk.rank.results, "../results/Obelisk_RNA_abundance_ranks.csv")
+write.csv(obelisk.rank.results, "../results/Obelisk_RNA_abundance_ranks.csv", row.names=FALSE, quote=FALSE)
